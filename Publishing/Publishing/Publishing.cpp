@@ -3,6 +3,7 @@
 #include <locale>
 #include <stdlib.h>
 #include <regex>
+#define DEBUG_FLG
 using namespace std;
 
 class Publishing { //Abstract parent class
@@ -18,6 +19,8 @@ public:
 		while (!regex_match(Name,regex("[A-Z][a-z]{1,32}"))) {
 			cout << "Enter a title > 3 characters:\n";
 			getline(cin, Name);
+			if (Name == "")
+				cout << "\nERROR 5: Is empty!\n\n";
 		}
 	}
 
@@ -44,8 +47,24 @@ private:
 	string ISBN,Publisher,Author;
 	int Quantity;
 	string tmp_Quantity;
-
+	string Date;
+	int k;
 public:
+	void setDate() { //DON`T FORGET TO DELETE. IT`S FOR CLASS WORK!!
+
+		while (!regex_match(Date, regex("(([0][1-9])|([1-2][0-9]))|([3][01])[.](([0][1-9])|([1][0-2]))[.](([1][9][0-9][0-9])|([2][0][0-2][0-3]))"))) {
+			if (k > 0)
+				cout << "Error 3\n";
+			cout << "Enter Date dd.mm.yyyy: \n";
+			getline(cin, Date);
+			k++;
+		}
+	}
+
+	string getDate() {
+		return(Date);
+	}
+
 	void setISBN() {
 		while (!regex_match(ISBN, regex("([0-9]{1,5}[-]{0,1}){5}"))) {
 			cout << "Enter the ISBN number : \n";
@@ -98,8 +117,12 @@ public:
 
 int main() {  							//!!!DO AN ISBN CHECK!!!
 	locale::global(std::locale(""));
+#ifdef DEBUG_FLG
 	Book test;
-	test.setQuantity();
-	cout << test.getQuantity();
+	test.setName();
+	test.setYear();
+	test.setDate();
+	cout << test.getName()<<"\n"<<test.getYear()<<"\n"<<test.getDate();
+#endif 
 	return 0;
 }
